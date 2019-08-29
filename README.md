@@ -1,2 +1,2 @@
 # NePlan
-Daily planner on  created by wildmaus and nerinos
+Daily planner on java created by wildmaus and nerinos
