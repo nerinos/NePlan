@@ -5,22 +5,26 @@ import model.EventClass;
 
 import java.awt.*;
 import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class BackgroundCheck extends Thread {
-    Date alarmTime;
+    Date initialTime;
     String alarmName;
     String alarmDescription;
-    Date alarmTime2;
+    Date alarmTime;
     Database db;
 
-    public BackgroundCheck(Date alarmTime, String alarmName, String alarmDescription, Database db) {
+    public BackgroundCheck(Date initialTime, String alarmName, String alarmDescription, Database db) {
         super(alarmName);
-        alarmTime.setSeconds(0);
-        this.alarmTime = alarmTime;
-    //    System.out.println(alarmTime);
-        alarmTime2 = new Date(alarmTime.getTime() - 30 * 60000);
-        alarmTime2.setSeconds(0);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(initialTime);
+        cal.set(Calendar.SECOND, 0);
+        this.initialTime = cal.getTime();
+    //    System.out.println(initialTime);
+        cal.setTime(new Date(initialTime.getTime() - 30 * 60000));
+        cal.set(Calendar.SECOND, 0);
+        alarmTime = cal.getTime();
     //    System.out.println(alarmTime2);
         this.alarmName = alarmName;
         //      System.out.println(alarmName);
@@ -32,7 +36,7 @@ public class BackgroundCheck extends Thread {
 
     public void run() {
         try {
-            while (alarmTime2.after(new Date())) {
+            while (alarmTime.after(new Date())) {
                 if (!isInterrupted()) {
                     Thread.sleep(500);
                 } else {
@@ -44,7 +48,7 @@ public class BackgroundCheck extends Thread {
             } else {
                 System.err.println("System tray not supported!");
             }
-            while (alarmTime.after(new Date())) {
+            while (initialTime.after(new Date())) {
                 if (!isInterrupted()) {
                     Thread.sleep(500);
                 } else {
