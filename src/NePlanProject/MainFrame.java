@@ -163,6 +163,13 @@ public class MainFrame extends JFrame {
     }
 
     public static void SetThread(Thread thread) {
+        if (t != null) {
+            try {
+                t.interrupt();
+            } catch (Exception e) {
+                System.out.println("Exception occurred while thread interrupting");
+            }
+        }
         t = thread;
     }
 

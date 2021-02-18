@@ -16,9 +16,11 @@ public class BackgroundCheck extends Thread {
 
     public BackgroundCheck(Date alarmTime, String alarmName, String alarmDescription, Database db) {
         super(alarmName);
+        alarmTime.setSeconds(0);
         this.alarmTime = alarmTime;
     //    System.out.println(alarmTime);
         alarmTime2 = new Date(alarmTime.getTime() - 30 * 60000);
+        alarmTime2.setSeconds(0);
     //    System.out.println(alarmTime2);
         this.alarmName = alarmName;
         //      System.out.println(alarmName);
@@ -38,14 +40,13 @@ public class BackgroundCheck extends Thread {
                 }
             }
             if (SystemTray.isSupported()) {
-                Notification.Notification("осталось меньше 30 минут до " + alarmName, alarmDescription);
+                Notification.Notification("30 minutes left before the event: \""+ alarmName + "\"", alarmDescription);
             } else {
                 System.err.println("System tray not supported!");
             }
             while (alarmTime.after(new Date())) {
                 if (!isInterrupted()) {
                     Thread.sleep(500);
-                    //                   System.out.println("a");
                 } else {
                     throw new InterruptedException();
                 }
